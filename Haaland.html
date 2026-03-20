@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Typing Practice</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        text-align: center;
+        color: white;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    #textDisplay {
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px auto;
+        width: 80%;
+        font-size: 20px;
+    }
+
+    #inputBox {
+        width: 80%;
+        padding: 15px;
+        font-size: 18px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+    }
+
+    #stats {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        background: #ff7eb3;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #ff4e91;
+    }
+</style>
+</head>
+<body>
+
+<h1>⌨️ Typing Practice</h1>
+
+<div id="textDisplay"></div>
+
+<input type="text" id="inputBox" placeholder="Start typing here..." />
+
+<div id="stats">
+    ⏱ Time: <span id="time">0</span>s |
+    ⚡ WPM: <span id="wpm">0</span>
+</div>
+
+<button onclick="newText()">New Text</button>
+
+<script>
+const texts = [
+    "The quick brown fox jumps over the lazy dog.",
+    "Typing fast requires practice and accuracy.",
+    "JavaScript makes websites interactive and fun.",
+    "Practice daily to improve your typing skills.",
+    "Speed and accuracy are both important."
+];
+
+let startTime;
+let timerInterval;
+
+function newText() {
+    const randomText = texts[Math.floor(Math.random() * texts.length)];
+    document.getElementById("textDisplay").innerText = randomText;
+    document.getElementById("inputBox").value = "";
+    document.getElementById("time").innerText = "0";
+    document.getElementById("wpm").innerText = "0";
+    clearInterval(timerInterval);
+    startTime = null;
+}
+
+document.getElementById("inputBox").addEventListener("input", function() {
+    const text = document.getElementById("textDisplay").innerText;
+    const input = this.value;
+
+    if (!startTime) {
+        startTime = new Date();
+        timerInterval = setInterval(updateTime, 1000);
+    }
+
+    if (input === text) {
+        clearInterval(timerInterval);
+        calculateWPM();
+        alert("Great job! 🎉");
+    }
+});
+
+function updateTime() {
+    const currentTime = new Date();
+    const seconds = Math.floor((currentTime - startTime) / 1000);
+    document.getElementById("time").innerText = seconds;
+}
+
+function calculateWPM() {
+    const time = document.getElementById("time").innerText;
+    const text = document.getElementById("textDisplay").innerText;
+    const words = text.split(" ").length;
+    const wpm = Math.round((words / time) * 60);
+    document.getElementById("wpm").innerText = wpm;
+}
+
+newText();
+</script>
+
+</body>
+</html>
